@@ -1,0 +1,74 @@
+[log]
+enabled = true
+log_level = "debug"
+
+[manager]
+linemode = "size_and_mtime"
+show_hidden = true
+sort_by = "mtime"
+sort_dir_first = false
+sort_reverse = true
+
+[opener]
+play = [
+  { run = 'mpv "$@"', orphan = true, for = "unix" },
+  { run = '"C:\Program Files\mpv.exe" %*', orphan = true, for = "windows" },
+]
+edit = [
+  { run = '$EDITOR "$@"', block = true, for = "unix" },
+  { run = "%EDITOR% %*", block = true, for = "windows" },
+]
+open = [{ run = 'xdg-open "$@"', desc = "Open" }]
+
+
+[[plugin.prepend_previewers]]
+name = "*.md"
+run = "glow"
+
+[[plugin.prepend_previewers]]
+mime = "audio/*"
+run = "exifaudio"
+
+[[plugin.prepend_previewers]]
+name = "*.csv"
+run = "rich-preview"
+
+[[plugin.prepend_previewers]]
+name = "*.rst"
+run = "rich-preview"
+
+[[plugin.prepend_previewers]]
+name = "*.ipynb"
+run = "rich-preview"
+
+[[plugin.prepend_previewers]]
+name = "*.json"
+run = "rich-preview"
+
+[preview]
+max_height = 1080
+max_width = 1920
+
+[[previewers.prepend]]
+mime = "application/zip"
+run = "ouch"
+
+[[previewers.prepend]]
+mime = "application/tar"
+run = "ouch"
+
+[[previewers.prepend]]
+mime = "application/bzip2"
+run = "ouch"
+
+[[previewers.prepend]]
+mime = "application/7z-compressed"
+run = "ouch"
+
+[[previewers.prepend]]
+mime = "application/rar"
+run = "ouch"
+
+[[previewers.prepend]]
+mime = "application/xz"
+run = "ouch"

@@ -1,0 +1,14 @@
+[plugin]
+deps = [
+  { use = "AnirudhG07/plugins-yazi:copy-file-contents", rev = "11167e1" },
+  { use = "Reledia/glow", rev = "5ce76dc" },
+  { use = "ndtoan96/ouch", rev = "b869886" },
+  { use = "orhnk/system-clipboard", rev = "7775a80" },
+  { use = "yazi-rs/plugins:max-preview", rev = "71c4fc2" },
+  { use = "yazi-rs/plugins:smart-enter", rev = "71c4fc2" },
+  { use = "Rolv-Apneseth/starship", rev = "9c37d37" },
+  { use = "yazi-rs/plugins:full-border", rev = "71c4fc2" },
+]
+
+[flavor]
+deps = []

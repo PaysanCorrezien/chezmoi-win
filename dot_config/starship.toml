@@ -1,0 +1,114 @@
+# Get editor completions based on the config schema
+"$schema" = 'https://starship.rs/config-schema.json'
+
+add_newline = true
+# format = """$shell$status$directory$git_branch$git_status$git_metrics$lua$docker_context$conda$hostname$localip$cmd_duration$sudo
+# $character"""
+format = """$all$shell$directory$status$git_branch$git_status$git_metrics$lua$docker_context$conda$hostname$localip$cmd_duration$sudo
+$character"""
+
+right_format = "$time"
+
+[line_break]
+disabled = true
+
+[directory]
+truncation_length = 3
+truncate_to_repo = true
+read_only = '🔒'
+fish_style_pwd_dir_length = 0
+format = '[\[📁$path\]]($style) '
+
+[git_branch]
+symbol = '🌿 '
+format = '[$symbol$branch]($style) '
+
+[git_status]
+format = '([\[$all_status$ahead_behind\]]($style) )'
+conflicted = '🚩'
+ahead = '⬆️ ${count}'
+behind = '⬇️ ${count}'
+diverged = '↕️ ⬆️ ${ahead_count}⬇️ ${behind_count}'
+up_to_date = '✅'
+untracked = '❓${count}'
+stashed = '📦'
+modified = '📝${count}'
+staged = '🟢${count}'
+renamed = '🔄${count}'
+deleted = '🗑️${count}'
+
+[git_state]
+format = '\([$state( $progress_current/$progress_total)]($style)\) '
+style = "bright-black"
+
+[git_metrics]
+added_style = 'bold green'
+deleted_style = 'bold red'
+format = '[+$added]($added_style)/[-$deleted]($deleted_style) '
+
+[docker_context]
+format = 'via [🐋 $context](blue bold)'
+
+[python]
+symbol = '👾 '
+pyenv_version_name = true
+
+[conda]
+format = '[$symbol$environment](dimmed green) '
+
+[hostname]
+ssh_only = false
+format = '[$ssh_symbol](bold blue) [\(💻$hostname ➜](bold cyan) '
+ssh_symbol = '🌏 '
+disabled = false
+
+# [character]
+# success_symbol = '[➜](bold green)'
+# error_symbol = '[✗](bold red)'
+# disabled = false
+[character]
+success_symbol = ""
+error_symbol = ""
+
+[lua]
+
+[golang]
+
+[nodejs]
+
+[status]
+disabled = false
+
+[shell]
+disabled = false
+powershell_indicator = '_ PS'
+format = '[$indicator]($style) '
+bash_indicator = " BASH"
+zsh_indicator = "⚡ZSH"
+cmd_indicator = "  cmd"
+nu_indicator = "🔥 NU"
+unknown_indicator = "❓ SHELL"
+style = "white bold"
+
+[rust]
+
+[cmd_duration]
+disabled = false
+min_time = 2000
+format = "[🏃$duration]($style) "
+
+[localip]
+ssh_only = false
+format = '[🌍$localipv4\)](bold cyan) '
+disabled = false
+
+[time]
+disabled = false
+style = 'bold yellow'
+format = '[🕙 $time]($style)'
+time_format = '%T'
+
+# [sudo]
+# style = 'bold red'
+# symbol = '💀ADMIN'
+# disabled = false

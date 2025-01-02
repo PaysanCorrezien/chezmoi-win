@@ -1,0 +1,3 @@
+# pack-refs with: peeled fully-peeled sorted 
+9c37d37099455a44343f4b491d56debf97435a0e refs/remotes/origin/main
+ceed6facce551963fb078b79bc5f125bb06699b9 refs/remotes/origin/option_disable_prompt
