@@ -185,3 +185,28 @@ run = "plugin keyjump --args='global once enter'"
 desc = "Enter the child directory, or open the file"
 on = "l"
 run = "plugin smart-enter"
+
+[[manager.prepend_keymap]]
+desc = "Open File Details"
+on = ["c", "P"]
+run = "plugin windows --args='properties'"
+
+[[manager.prepend_keymap]]
+desc = "Open PowerShell Here"
+on = ["g", "p"]
+run = "plugin windows --args='powershell'"
+
+[[manager.prepend_keymap]]
+desc = "Open PowerShell Admin"
+on = ["g", "P"]
+run = "plugin windows --args='powershell_admin'"
+
+[[manager.prepend_keymap]]
+desc = "Set as Wallpapar"
+on = ["m", "W"]
+run = "plugin windows --args='set-wallpaper'"
+
+[[manager.prepend_keymap]]
+desc = "Open Widows Explorer"
+on = ["g", "E"]
+run = "plugin windows --args='open-explorer'"
