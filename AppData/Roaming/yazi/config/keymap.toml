@@ -176,10 +176,10 @@ desc = "Maximize or restore preview"
 on = "T"
 run = "plugin --sync max-preview"
 
-[[manager.prepend_keymap]]
-desc = "Keyjump (once Global mode)"
-on = ["f"]
-run = "plugin keyjump --args='global once enter'"
+# [[manager.prepend_keymap]]
+# desc = "Keyjump (once Global mode)"
+# on = ["f"]
+# run = "plugin keyjump --args='global once enter'"
 
 [[manager.prepend_keymap]]
 desc = "Enter the child directory, or open the file"
