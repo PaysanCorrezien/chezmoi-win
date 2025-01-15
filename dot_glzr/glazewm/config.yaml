@@ -129,9 +129,14 @@ window_rules:
       - window_process: { equals: "Lively" }
         window_class: { regex: "HwndWrapper" }
 
+  # - commands: ["move --workspace 1"]
+  #   match:
+  #     - window_process: { equals: "wezterm-gui" }
+  #     #TODO: ignore the yazi one
   - commands: ["move --workspace 1"]
     match:
       - window_process: { equals: "wezterm-gui" }
+        window_title: { regex: "~" } # Match titles starting with '~' , seems wezterm do this on win ?
 
   - commands: ["move --workspace 11"]
     match:
@@ -139,9 +144,9 @@ window_rules:
 
   - commands: ["move --workspace 4"]
     match:
-      - window_process: { equals: "explorer" }
-      - window_process: { equals: "claude" }
-      - window_process: { equals: "chatgpt" }
+      # - window_process: { equals: "explorer" }
+      # - window_process: { equals: "claude" }
+      # - window_process: { equals: "chatgpt" }
 
   - commands: ["move --workspace 5"]
     match:
@@ -186,11 +191,6 @@ window_rules:
     match:
       - window_process: { equals: "Console2010.exe" }
 
-  # - commands: ["set-floating"]
-  #   match:
-  #     - window_process: { equals: "wezterm-gui.exe" }
-  #       window_title: { regex: "TUI File Explorer - Yazi" }
-
   # Communication apps to workspace 8
   - commands: ["move --workspace 8"]
     match:
@@ -210,6 +210,7 @@ window_rules:
       - window_class: { equals: "OperationStatusWindow" }
       - window_process: { equals: "Todoist" }
       - window_process: { equals: "Taskmgr" }
+      - window_process: { equals: "explorer" }
       - window_title: { regex: "TUI File Explorer - Yazi" }
 
 binding_modes:
