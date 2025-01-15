@@ -202,6 +202,7 @@ function Reload-Powershell
     }
   }
 }
+$env:HOME = $env:USERPROFILE
 
 # Initialize Starship
 Invoke-Expression (&starship init powershell)
