@@ -20,6 +20,11 @@ edit = [
 ]
 open = [{ run = 'xdg-open "$@"', desc = "Open" }]
 
+extract = [
+  { run = 'ouch d -y "%*"', desc = "Extract here with ouch", for = "windows" },
+  { run = 'ouch d -y "$@"', desc = "Extract here with ouch", for = "unix" },
+]
+
 
 [[plugin.prepend_previewers]]
 name = "*.md"
