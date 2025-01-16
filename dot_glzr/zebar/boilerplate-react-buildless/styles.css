@@ -1,0 +1,226 @@
+/**
+ * Import the Nerdfonts icon font.
+ * Ref https://www.nerdfonts.com/cheat-sheet for a cheatsheet of available Nerdfonts icons.
+ */
+@import 'https://www.nerdfonts.com/assets/css/webfont.css';
+
+/* Rose Pine theme colors */
+:root {
+  --rose-base: #191724;
+  --rose-surface: #1f1d2e;
+  --rose-overlay: #26233a;
+  --rose-muted: #6e6a86;
+  --rose-subtle: #908caa;
+  --rose-text: #e0def4;
+  --rose-love: #eb6f92;
+  --rose-gold: #f6c177;
+  --rose-rose: #ebbcba;
+  --rose-pine: #31748f;
+  --rose-foam: #9ccfd8;
+  --rose-iris: #c4a7e7;
+}
+
+i {
+  margin-right: 7px;
+  font-size: 15px;
+}
+
+/* Colorful icons */
+.workspace i { color: var(--rose-foam); }
+.date-widget i { color: var(--rose-gold); }
+.media-widget i { color: var(--rose-love); }
+.widget i.nf-fae-chip { color: var(--rose-pine); }
+.widget i.nf-oct-cpu { color: var(--rose-rose); }
+.widget i.nf-fa-battery_4 { color: var(--rose-foam); }
+.widget i.nf-md-power_plug { color: var(--rose-gold); }
+.widget i.nf-md-volume_high { color: var(--rose-iris); }
+.widget i.nf-md-weather_partly_cloudy { color: var(--rose-gold); }
+.widget i.nf-md-download { color: var(--rose-foam); }
+.widget i.nf-md-upload { color: var(--rose-love); }
+
+body {
+  color: var(--rose-text);
+  font-family: ui-monospace, monospace;
+  font-size: 13px;
+  overflow: hidden;
+  background: transparent;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  background: transparent;
+}
+
+#root {
+  border-bottom: 1px solid rgba(38, 35, 58, 0.5);
+}
+
+.app {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  align-items: center;
+  height: 100%;
+  padding: 5px 1.5vw;
+}
+
+.left,
+.center,
+.right {
+  display: flex;
+  align-items: center;
+}
+
+.center {
+  justify-self: center;
+}
+
+.right {
+  justify-self: end;
+}
+
+/* Container styles */
+.workspaces-container,
+.widgets-container,
+.media-widget {
+  border: 2px solid var(--rose-overlay);
+  border-radius: 7px;
+  padding: 5px 10px;
+  background: var(--rose-base);
+  backdrop-filter: blur(8px);
+}
+
+.workspaces-container {
+  display: flex;
+  align-items: center;
+}
+
+.widgets-container {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.workspaces {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.workspace {
+  background: var(--rose-overlay);
+  padding: 5px 10px;
+  color: var(--rose-text);
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  font-size: 13px;
+}
+
+.workspace i {
+  margin: 0;
+}
+
+.workspace.displayed {
+  background: var(--rose-surface);
+}
+
+.workspace.focused,
+.workspace:hover {
+  background: var(--rose-pine);
+}
+
+.widget {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 26px;
+}
+
+.widget i {
+  margin: 0;
+}
+
+/* Media widget styles */
+.media-widget {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--rose-foam);
+  min-height: 26px;
+}
+
+.media-title {
+  color: var(--rose-foam);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 300px;
+}
+
+.media-control {
+  background: none;
+  border: none;
+  color: var(--rose-iris);
+  cursor: pointer;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5px;
+  transition: all 0.2s ease;
+}
+
+.media-control:hover {
+  background: var(--rose-overlay);
+  color: var(--rose-foam);
+}
+
+.media-control i {
+  margin: 0;
+}
+
+.high-usage {
+  color: var(--rose-love);
+}
+
+.battery {
+  position: relative;
+}
+
+.battery .charging-icon {
+  position: absolute;
+  font-size: 8px;
+  left: -9px;
+  top: 4px;
+}
+
+/* Network widget styles */
+.network-name {
+  color: var(--rose-foam);
+  margin-right: 10px;
+}
+
+.network-speeds {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.network-speed {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--rose-subtle);
+}
+
+.network-speed i {
+  font-size: 13px;
+  margin: 0;
+}
+
+/* Update colorful icons section */
+.widget i.nf-md-wifi { color: var(--rose-foam); }

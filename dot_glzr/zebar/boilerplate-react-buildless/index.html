@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Base styles for better consistency across platforms (aka. CSS reset). -->
+    <link rel="stylesheet" type="text/css" href="../normalize.css" />
+
+    <!-- Custom styles. -->
+    <link rel="stylesheet" type="text/css" href="./styles.css" />
+
+    <!-- Add empty favicon to suppress not found errors. -->
+    <link rel="icon" href="data:;" />
+
+    <!-- Allows React to be run buildless via "text/babel" script below. -->
+    <script
+      src="https://unpkg.com/@babel/standalone@7.25.6/babel.min.js"
+      integrity="sha256-aS0B0wnsaDByLfE16h4MDCP1fQFccysd1YWOcV+gbBo="
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <script type="text/babel" data-type="module">
+      import React, {
+        useState,
+        useEffect,
+      } from 'https://esm.sh/react@18?dev';
+      import { createRoot } from 'https://esm.sh/react-dom@18/client?dev';
+      import * as zebar from 'https://esm.sh/zebar@2';
+
+      const providers = zebar.createProviderGroup({
+        glazewm: { type: 'glazewm' },
+        cpu: { type: 'cpu' },
+        battery: { type: 'battery' },
+        memory: { type: 'memory' },
+        weather: { type: 'weather' },
+        date: { type: 'date', formatting: 'EEE d MMM t' },
+        audio: { type: 'audio' },
+        media: { type: 'media' },
+        network: { type: 'network' },
+      });
+
+      createRoot(document.getElementById('root')).render(<App />);
+
+      function App() {
+        const [output, setOutput] = useState(providers.outputMap);
+
+        useEffect(() => {
+          providers.onOutput(() => setOutput(providers.outputMap));
+        }, []);
+
+        // Format bytes to human readable (for memory display)
+        function formatBytes(bytes) {
+          if (!bytes) return '0B';
+          return (bytes / (1024 * 1024 * 1024)).toFixed(1) + 'GB';
+        }
+
+        // Check if string is a valid Nerdfont icon class
+        function isValidNerdFont(str) {
+          return str?.startsWith('nf-') && str.split('-').length >= 3;
+        }
+
+        return (
+          <div className="app">
+            <div className="left">
+              {output.glazewm && (
+                <div className="workspaces-container">
+                  <div className="workspaces">
+                    {output.glazewm.currentWorkspaces.map(workspace => (
+                      <button
+                        className={`workspace ${workspace.hasFocus ? 'focused' : ''} ${workspace.isDisplayed ? 'displayed' : ''}`}
+                        onClick={() =>
+                          output.glazewm.runCommand(
+                            `focus --workspace ${workspace.name}`,
+                          )
+                        }
+                        key={workspace.name}
+                      >
+                        {isValidNerdFont(workspace.displayName) ? (
+                          <i className={`nf ${workspace.displayName}`}></i>
+                        ) : (
+                          <span className="workspace-name">{workspace.displayName || workspace.name}</span>
+                        )}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            <div className="center">
+              {output.media?.currentSession && (
+                <div className="media-widget">
+                  <i className="nf nf-md-music_note"></i>
+                  <span className="media-title">
+                    {output.media.currentSession.title}
+                    {output.media.currentSession.artist && ` - ${output.media.currentSession.artist}`}
+                  </span>
+                  <button className="media-control" onClick={() => output.media?.togglePlayPause()}>
+                    <i className={`nf ${output.media.currentSession.isPlaying ? 'nf-md-pause' : 'nf-md-play'}`}></i>
+                  </button>
+                </div>
+              )}
+            </div>
+
+            <div className="right">
+              <div className="widgets-container">
+                {output.weather && (
+                  <div className="widget">
+                    <i className="nf nf-md-weather_partly_cloudy"></i>
+                    {Math.round(output.weather.celsiusTemp)}°C
+                  </div>
+                )}
+
+                {output?.network && (
+                  <div className="widget">
+                    <i className="nf nf-md-wifi"></i>
+                    {output.network.defaultGateway?.ssid && (
+                      <span className="network-name">
+                        {output.network.defaultGateway.ssid}
+                      </span>
+                    )}
+                    {output.network.traffic && (
+                      <div className="network-speeds">
+                        <div className="network-speed">
+                          <i className="nf nf-md-download"></i>
+                          {output.network.traffic.received.siValue.toFixed(1)} {output.network.traffic.received.siUnit}/s
+                        </div>
+                        <div className="network-speed">
+                          <i className="nf nf-md-upload"></i>
+                          {output.network.traffic.transmitted.siValue.toFixed(1)} {output.network.traffic.transmitted.siUnit}/s
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {output.memory && (
+                  <div className="widget">
+                    <i className="nf nf-fae-chip"></i>
+                    {Math.round(output.memory.usage)}% - {formatBytes(output.memory.usedMemory)}
+                  </div>
+                )}
+
+                {output.cpu && (
+                  <div className="widget">
+                    <i className="nf nf-oct-cpu"></i>
+                    <span className={output.cpu.usage > 85 ? 'high-usage' : ''}>
+                      {Math.round(output.cpu.usage)}%
+                    </span>
+                  </div>
+                )}
+
+                {output.battery && (
+                  <div className="widget">
+                    {output.battery.isCharging && (
+                      <i className="nf nf-md-power_plug charging-icon"></i>
+                    )}
+                    <i className="nf nf-fa-battery_4"></i>
+                    {Math.round(output.battery.chargePercent)}%
+                  </div>
+                )}
+
+                {output.audio?.defaultPlaybackDevice && (
+                  <div className="widget">
+                    <i className="nf nf-md-volume_high"></i>
+                    {output.audio.defaultPlaybackDevice.volume}%
+                  </div>
+                )}
+
+                {output.date?.formatted && (
+                  <div className="widget">
+                    <i className="nf nf-md-calendar_clock"></i>
+                    {output.date.formatted}
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        );
+      }
+    </script>
+  </body>
+</html>
