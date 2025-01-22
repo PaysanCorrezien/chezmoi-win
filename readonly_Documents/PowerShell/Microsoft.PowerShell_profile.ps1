@@ -208,14 +208,78 @@ $env:HOME = $env:USERPROFILE
 # Invoke-Expression (&starship init powershell)
 Invoke-Expression (& { (zoxide init powershell | Out-String) })
 
-function Invoke-Starship-PreCommand {
-    $current_location = Get-Location
-    if ($current_location.Provider.Name -eq "FileSystem") {
-        $ansi_escape = [char]27
-        $provider_path = $current_location.ProviderPath -replace "\\", "/"
-        $prompt = "$ansi_escape]7;file:///$provider_path$ansi_escape\"
-        Write-Host -NoNewline $prompt
+# NOTE: work for osc7 only
+# function Invoke-Starship-PreCommand {
+#     $current_location = Get-Location
+#     if ($current_location.Provider.Name -eq "FileSystem") {
+#         $ansi_escape = [char]27
+#         $provider_path = $current_location.ProviderPath -replace "\\", "/"
+#         $prompt = "$ansi_escape]7;file:///$provider_path$ansi_escape\"
+#         Write-Host -NoNewline $prompt
+#     }
+# }
+#
+# Invoke-Expression (&starship init powershell)
+#
+$Global:__LastHistoryId = -1
+$Global:__ExecutingCommand = 0
+
+function Global:__Terminal-Get-LastExitCode {
+    if ($? -eq $True) {
+        return 0
+    }
+    if ("$LastExitCode" -ne "") { return $LastExitCode }
+    return -1
+}
+
+# Create a function to handle line input
+function OnInputAccepted {
+    if ($Global:__ExecutingCommand -eq 0) {
+        # End of line input
+        Write-Host -NoNewline "`e]133;I`a"
+        # Start of command output
+        Write-Host -NoNewline "`e]133;C`a"
+        $Global:__ExecutingCommand = 1
     }
 }
 
-Invoke-Expression (&starship init powershell)
+# Register the input handler
+Set-PSReadLineKeyHandler -Key Enter -ScriptBlock {
+    OnInputAccepted
+    [Microsoft.PowerShell.PSConsoleReadLine]::AcceptLine()
+}
+
+# Handle command execution
+$ExecutionContext.InvokeCommand.PreCommandLookupAction = {
+    param([string]$commandName)
+    # We already marked output start in OnInputAccepted
+}
+
+function prompt {
+    $out = ""
+    $LastHistoryEntry = $(Get-History -Count 1)
+    
+    # Mark end of previous command if we were executing one
+    if ($Global:__ExecutingCommand -eq 1 -and $Global:__LastHistoryId -ne -1) {
+        # Command completed, mark its end
+        $out += "`e]133;D;aid=$PID`a"
+    }
+    
+    # Start new command sequence
+    $out += "`e]133;A;cl=m;aid=$PID`a"
+    
+    # Mark prompt content
+    $out += "`e]133;P;k=i`a"
+    
+    # Actual prompt content
+    $out += "PS > "
+    
+    # End prompt and start user input area
+    $out += "`e]133;B`a"
+    
+    # Update state tracking
+    $Global:__LastHistoryId = $LastHistoryEntry.Id
+    $Global:__ExecutingCommand = 0
+    
+    return $out
+}
