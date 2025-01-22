@@ -205,5 +205,17 @@ function Reload-Powershell
 $env:HOME = $env:USERPROFILE
 
 # Initialize Starship
-Invoke-Expression (&starship init powershell)
+# Invoke-Expression (&starship init powershell)
 Invoke-Expression (& { (zoxide init powershell | Out-String) })
+
+function Invoke-Starship-PreCommand {
+    $current_location = Get-Location
+    if ($current_location.Provider.Name -eq "FileSystem") {
+        $ansi_escape = [char]27
+        $provider_path = $current_location.ProviderPath -replace "\\", "/"
+        $prompt = "$ansi_escape]7;file:///$provider_path$ansi_escape\"
+        Write-Host -NoNewline $prompt
+    }
+}
+
+Invoke-Expression (&starship init powershell)
