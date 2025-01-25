@@ -1,0 +1,27 @@
+# customCommands:
+#   - key: <c-a>
+#     description: Pick AI commit
+#     loadingText: Generating commit message...
+#     command: >-
+#       pwsh -NoProfile -ExecutionPolicy Bypass -Command "
+#       $diff = git --no-pager diff --no-color --no-ext-diff --cached;
+#       $result = aichat \"Generate commit message for: $diff\" | fzf;
+#       if ($result) {
+#         $tmp = New-TemporaryFile;
+#         $result | Out-File $tmp -Encoding utf8;
+#         if ($env:EDITOR) { & $env:EDITOR $tmp } else { notepad $tmp };
+#         git commit -F $tmp;
+#         Remove-Item $tmp
+#       }
+#       "
+#     context: files
+#     subprocess: true
+#     showOutput: true
+customCommands:
+  - key: <c-a>
+    description: Pick AI commit
+    loadingText: Generating commit message...
+    command: pwsh -NoProfile -ExecutionPolicy Bypass -File "C:\users\admin\appdata\local\lazygit\commit-oracle.ps1"
+    context: files
+    subprocess: true
+    showOutput: true
