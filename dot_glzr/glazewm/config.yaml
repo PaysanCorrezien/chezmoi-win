@@ -16,7 +16,8 @@ general:
 
   # Whether to switch back and forth between the previously focused
   # workspace when focusing the current workspace.
-  toggle_workspace_on_refocus: false
+  # NOTE: the most broken bindings false by default ?????????
+  toggle_workspace_on_refocus: true
 
   cursor_jump:
     # Whether to automatically move the cursor on the specified trigger.
@@ -99,17 +100,32 @@ window_behavior:
       # Whether to show fullscreen windows as always on top.
       shown_on_top: false
 
+#NOTE: https://www.nerdfonts.com/cheat-sheet
 workspaces:
   - name: "1"
+    display_name: nf-fa-terminal
   - name: "2"
+    display_name: nf-cod-remote_explorer
   - name: "3"
+    display_name: nf-md-robot_angry_outline
   - name: "4"
+    display_name: nf-custom-neovim
   - name: "5"
+    display_name: nf-fa-edge
   - name: "6"
+    display_name: nf-fa-discord
   - name: "7"
+    display_name: nf-md-key_chain_variant
   - name: "8"
+    display_name: nf-md-microsoft_teams
   - name: "9"
+    display_name: nf-md-microsoft_outlook
   - name: "11"
+    display_name: nf-md-notebook
+  - name: "12"
+    display_name: nf-md-youtube
+  - name: "13"
+    display_name: nf-cod-copilot
 
 window_rules:
   - commands: ["ignore"]
@@ -142,15 +158,33 @@ window_rules:
     match:
       - window_process: { equals: "Obsidian" }
 
+  - commands: ["move --workspace 12"]
+    match:
+      - window_process: { regex: "msedge|brave|chrome" }
+        window_title: { regex: "^YouTube.*" }
+
+  - commands: ["move --workspace 3"]
+    match:
+      - window_process: { equals: "chatgpt.exe" }
+  # - commands: ["move --workspace 4"]
+  #   match:
+  #     - window_title: { equals: "GitHub" }
+  # - window_process: { equals: "explorer" }
+  # - window_process: { equals: "claude" }
+  #
+  # Specific rule for GitHub PWA
   - commands: ["move --workspace 4"]
     match:
-      # - window_process: { equals: "explorer" }
-      # - window_process: { equals: "claude" }
-      # - window_process: { equals: "chatgpt" }
+      - window_process: { equals: "Cursor" }
+      # - window_title: { equals: "GitHub" }
+      # - window_title: { equals: "Claude" }
 
+  # General rule for all other browser windows
   - commands: ["move --workspace 5"]
     match:
       - window_process: { regex: "msedge|brave|chrome" }
+        # window_title: { not_equals: "GitHub" } # Exclude GitHub PWA
+        window_title: { not_regex: "^(GitHub|Claude|ChatGPT|Youtube)$" } # Exclude PWAs
 
   - commands: ["move --workspace 6"]
     match:
@@ -168,6 +202,18 @@ window_rules:
   - commands: ["move --workspace 9"]
     match:
       - window_process: { equals: "OUTLOOK" }
+
+  #NOTE: the rules that move edge PWA need to go after the default edge rules
+  - commands: ["move --workspace 12"]
+    match:
+      - window_process: { regex: "msedge|brave|chrome" }
+        window_title: { regex: "^YouTube.*" }
+
+  - commands: ["move --workspace 13"]
+    match:
+      # - window_title: { equals: "Claude*" }
+      - window_process: { regex: "msedge|brave|chrome" }
+        window_title: { regex: ".*Claude.*" }
 
   - commands: ["move --workspace 2"]
     match:
@@ -212,6 +258,15 @@ window_rules:
       - window_process: { equals: "Taskmgr" }
       - window_process: { equals: "explorer" }
       - window_title: { regex: "TUI File Explorer - Yazi" }
+      - window_title: { equals: "GitHub" }
+
+  - commands: ["ignore"]
+    match:
+      # - window_title: { regex: "TUI File Explorer - Yazi" }
+      - window_title: { equals: "GitHub" }
+      # - window_title: { equals: "Claude" }
+      # - window_title: { equals: "ChatGPT" }
+      # - window_title: { equals: "Youtube" }
 
 binding_modes:
   # When enabled, the focused window can be resized via arrow keys or HJKL.
@@ -321,8 +376,8 @@ keybindings:
   # Launch CMD terminal. Alternatively, use `shell-exec wt` or
   # `shell-exec %ProgramFiles%/Git/git-bash.exe` to start Windows
   # Terminal and Git Bash respectively.
-  - commands: ["shell-exec %ProgramFiles%/wezterm/wezterm-gui.exe"]
-    bindings: ["alt+enter"]
+  # - commands: ["shell-exec %ProgramFiles%/wezterm/wezterm-gui.exe"]
+  #   bindings: ["alt+enter"]
 
   # Focus the next/previous workspace defined in `workspaces` config.
   - commands: ["focus --next-workspace"]
@@ -355,6 +410,10 @@ keybindings:
     bindings: ["alt+9"]
   - commands: ["focus --workspace 11"]
     bindings: ["alt+n"]
+  - commands: ["focus --workspace 12"]
+    bindings: ["alt+y"]
+  - commands: ["focus --workspace 13"]
+    bindings: ["alt+c"]
 
   # Move the focused window's parent workspace to a monitor in a given
   # direction.
