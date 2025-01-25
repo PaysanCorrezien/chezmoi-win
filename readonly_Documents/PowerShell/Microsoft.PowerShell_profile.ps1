@@ -1,6 +1,7 @@
 ## Configuration spécifique pour Psfzf
 Import-Module PSReadLine
-if (-not (Get-Module -ListAvailable -Name PSFzf)) {
+if (-not (Get-Module -ListAvailable -Name PSFzf))
+{
   Write-Host "Installing PSFzf on first init of this profile"
   Install-Module -Name PSFzf -Force
 }
@@ -59,6 +60,11 @@ set-alias -name lg -value lazygit
 #     sgpt --repl temp --shell $args
 # }
 
+
+#NOTE: load secrets from .env file
+Get-Content ~/.config/secrets/secrets.env | ForEach-Object { if ($_ -match "^\s*([^=]+?)\s*=\s*`"?(.*?)`"?\s*$")
+  { $value = $matches[2] -replace '^[\"'']|[\"'']$'; [Environment]::SetEnvironmentVariable($matches[1], $value, 'Process') 
+  }}
 # function s {
 #   gsudo --copyNS $args
 # # }
@@ -78,20 +84,24 @@ set-alias -name lg -value lazygit
 #   Import-Module "$env:USERPROFILE\Documents\PowerShell\.secret.ps1"
 # }
 #Bindings 
-if ($PSVersionTable.Platform -eq "Unix") {
-    $bindingsPath = "/home/dylan/.local/share/chezmoi/dot_windows/powershellcore/bindings.ps1"
-    $psreadlinebindingsPath = "/home/dylan/.local/share/chezmoi/dot_windows/powershellcore/psreadlinebindings.ps1"
-} else {
-    $bindingsPath = "$env:USERPROFILE\Documents\PowerShell\Bindings.ps1"
-    $psreadlinebindingsPath = "$env:USERPROFILE\Documents\PowerShell/psreadlinebindings.ps1"
+if ($PSVersionTable.Platform -eq "Unix")
+{
+  $bindingsPath = "/home/dylan/.local/share/chezmoi/dot_windows/powershellcore/bindings.ps1"
+  $psreadlinebindingsPath = "/home/dylan/.local/share/chezmoi/dot_windows/powershellcore/psreadlinebindings.ps1"
+} else
+{
+  $bindingsPath = "$env:USERPROFILE\Documents\PowerShell\Bindings.ps1"
+  $psreadlinebindingsPath = "$env:USERPROFILE\Documents\PowerShell/psreadlinebindings.ps1"
 }
 
-if (Test-Path -Path $bindingsPath) {
-    Import-Module $bindingsPath
+if (Test-Path -Path $bindingsPath)
+{
+  Import-Module $bindingsPath
 }
 
-if (Test-Path -Path $psreadlinebindingsPath) {
-    Import-Module $psreadlinebindingsPath
+if (Test-Path -Path $psreadlinebindingsPath)
+{
+  Import-Module $psreadlinebindingsPath
 }
 function which($name)
 {
@@ -116,8 +126,9 @@ function sha256
 # $principal = New-Object Security.Principal.WindowsPrincipal $identity
 # $isAdmin = $principal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
 
-function Invoke-LsDeluxe {
-    lsd @args
+function Invoke-LsDeluxe
+{
+  lsd @args
 }
 
 Set-Alias -Name ls -Value Invoke-LsDeluxe -Option AllScope
@@ -297,74 +308,84 @@ $original_prompt = $function:prompt
 $Global:__LastHistoryId = -1
 $Global:__ExecutingCommand = 0
 
-function Global:__Terminal-Get-LastExitCode {
-    if ($? -eq $True) {
-        return 0
-    }
-    if ("$LastExitCode" -ne "") { return $LastExitCode }
-    return -1
+function Global:__Terminal-Get-LastExitCode
+{
+  if ($? -eq $True)
+  {
+    return 0
+  }
+  if ("$LastExitCode" -ne "")
+  { return $LastExitCode 
+  }
+  return -1
 }
 
 # OSC 7 directory tracking - this will run before the prompt
-function Invoke-Starship-PreCommand {
-    $current_location = Get-Location
-    if ($current_location.Provider.Name -eq "FileSystem") {
-        $ansi_escape = [char]27
-        $provider_path = $current_location.ProviderPath -replace "\\", "/"
-        $prompt = "$ansi_escape]7;file:///$provider_path$ansi_escape\"
-        Write-Host -NoNewline $prompt
-    }
+function Invoke-Starship-PreCommand
+{
+  $current_location = Get-Location
+  if ($current_location.Provider.Name -eq "FileSystem")
+  {
+    $ansi_escape = [char]27
+    $provider_path = $current_location.ProviderPath -replace "\\", "/"
+    $prompt = "$ansi_escape]7;file:///$provider_path$ansi_escape\"
+    Write-Host -NoNewline $prompt
+  }
 }
 
 # Line input handling for OSC 133
-function OnInputAccepted {
-    if ($Global:__ExecutingCommand -eq 0) {
-        # End of line input
-        Write-Host -NoNewline "`e]133;I`a"
-        # Start of command output
-        Write-Host -NoNewline "`e]133;C`a"
-        $Global:__ExecutingCommand = 1
-    }
+function OnInputAccepted
+{
+  if ($Global:__ExecutingCommand -eq 0)
+  {
+    # End of line input
+    Write-Host -NoNewline "`e]133;I`a"
+    # Start of command output
+    Write-Host -NoNewline "`e]133;C`a"
+    $Global:__ExecutingCommand = 1
+  }
 }
 
 # Register the input handler
 Set-PSReadLineKeyHandler -Key Enter -ScriptBlock {
-    OnInputAccepted
-    [Microsoft.PowerShell.PSConsoleReadLine]::AcceptLine()
+  OnInputAccepted
+  [Microsoft.PowerShell.PSConsoleReadLine]::AcceptLine()
 }
 
 # Handle command execution
 $ExecutionContext.InvokeCommand.PreCommandLookupAction = {
-    param([string]$commandName)
-    # We already marked output start in OnInputAccepted
+  param([string]$commandName)
+  # We already marked output start in OnInputAccepted
 }
 
 # Our new prompt that wraps the original starship prompt
-function prompt {
-    $out = ""
-    $LastHistoryEntry = $(Get-History -Count 1)
+function prompt
+{
+  $out = ""
+  $LastHistoryEntry = $(Get-History -Count 1)
     
-    # Mark end of previous command if we were executing one
-    if ($Global:__ExecutingCommand -eq 1 -and $Global:__LastHistoryId -ne -1) {
-        $out += "`e]133;D;aid=$PID`a"
-    }
+  # Mark end of previous command if we were executing one
+  if ($Global:__ExecutingCommand -eq 1 -and $Global:__LastHistoryId -ne -1)
+  {
+    $out += "`e]133;D;aid=$PID`a"
+  }
     
-    # Start new command sequence
-    $out += "`e]133;A;cl=m;aid=$PID`a"
+  # Start new command sequence
+  $out += "`e]133;A;cl=m;aid=$PID`a"
     
-    # Mark prompt content
-    $out += "`e]133;P;k=i`a"
+  # Mark prompt content
+  $out += "`e]133;P;k=i`a"
     
-    # Get the original starship prompt content
-    $starship_out = & $original_prompt
-    $out += $starship_out
+  # Get the original starship prompt content
+  $starship_out = & $original_prompt
+  $out += $starship_out
     
-    # End prompt and start user input area
-    $out += "`e]133;B`a"
+  # End prompt and start user input area
+  $out += "`e]133;B`a"
     
-    # Update state tracking
-    $Global:__LastHistoryId = $LastHistoryEntry.Id
-    $Global:__ExecutingCommand = 0
+  # Update state tracking
+  $Global:__LastHistoryId = $LastHistoryEntry.Id
+  $Global:__ExecutingCommand = 0
     
-    return $out
+  return $out
 }
