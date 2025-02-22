@@ -20,6 +20,9 @@ function ll
 { Get-ChildItem -Force @args 
 }
 
+$env:POWERSHELL_UPDATECHECK = "Off"
+
+Set-PSReadLineOption -CompletionQueryItems 1000 #NOTE: pager dont bother with number of items
 
 $ENV:FZF_DEFAULT_OPTS=@"
 --color=bg+:#363a4f,bg:#24273a,spinner:#f4dbd6,hl:#ed8796
@@ -215,9 +218,14 @@ function Reload-Powershell
 }
 $env:HOME = $env:USERPROFILE
 
+# NOTE: https://carapace-sh.github.io/carapace-bin/setup.html
+$env:CARAPACE_BRIDGES = 'zsh,fish,bash,inshellisense' # optional
+Set-PSReadLineOption -Colors @{ "Selection" = "`e[7m" }
+Set-PSReadlineKeyHandler -Key Tab -Function MenuComplete
+carapace _carapace | Out-String | Invoke-Expression
+
 # Initialize Starship
 # Invoke-Expression (&starship init powershell)
-Invoke-Expression (& { (zoxide init powershell | Out-String) })
 
 # NOTE: work for osc7 only
 # function Invoke-Starship-PreCommand {
@@ -389,3 +397,5 @@ function prompt
     
   return $out
 }
+
+Invoke-Expression (& { (zoxide init powershell | Out-String) })
