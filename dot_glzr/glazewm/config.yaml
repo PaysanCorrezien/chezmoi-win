@@ -126,6 +126,8 @@ workspaces:
     display_name: nf-md-youtube
   - name: "13"
     display_name: nf-cod-copilot
+  - name: "14"
+    display_name: nf-oct-file_directory
 
 window_rules:
   - commands: ["ignore"]
@@ -148,7 +150,6 @@ window_rules:
   # - commands: ["move --workspace 1"]
   #   match:
   #     - window_process: { equals: "wezterm-gui" }
-  #     #TODO: ignore the yazi one
   - commands: ["move --workspace 1"]
     match:
       - window_process: { equals: "wezterm-gui" }
@@ -165,19 +166,11 @@ window_rules:
 
   - commands: ["move --workspace 3"]
     match:
-      - window_process: { equals: "chatgpt.exe" }
-  # - commands: ["move --workspace 4"]
-  #   match:
-  #     - window_title: { equals: "GitHub" }
-  # - window_process: { equals: "explorer" }
-  # - window_process: { equals: "claude" }
-  #
+      - window_process: { equals: "Chatgpt" }
   # Specific rule for GitHub PWA
   - commands: ["move --workspace 4"]
     match:
       - window_process: { equals: "Cursor" }
-      # - window_title: { equals: "GitHub" }
-      # - window_title: { equals: "Claude" }
 
   # General rule for all other browser windows
   - commands: ["move --workspace 5"]
@@ -257,16 +250,17 @@ window_rules:
       - window_process: { equals: "Todoist" }
       - window_process: { equals: "Taskmgr" }
       - window_process: { equals: "explorer" }
+
+      # - commands: ["set-floating", "move --workspace current"]
+      #   match:
       - window_title: { regex: "TUI File Explorer - Yazi" }
       - window_title: { equals: "GitHub" }
+      # Alternatively, you can match by window class
+      # - window_class: { equals: 'YourWindowClass' }
 
-  - commands: ["ignore"]
-    match:
-      # - window_title: { regex: "TUI File Explorer - Yazi" }
-      - window_title: { equals: "GitHub" }
-      # - window_title: { equals: "Claude" }
-      # - window_title: { equals: "ChatGPT" }
-      # - window_title: { equals: "Youtube" }
+  # - commands: ["ignore"]
+  #   match:
+  #     - window_title: { equals: "GitHub" }
 
 binding_modes:
   # When enabled, the focused window can be resized via arrow keys or HJKL.
@@ -376,8 +370,8 @@ keybindings:
   # Launch CMD terminal. Alternatively, use `shell-exec wt` or
   # `shell-exec %ProgramFiles%/Git/git-bash.exe` to start Windows
   # Terminal and Git Bash respectively.
-  # - commands: ["shell-exec %ProgramFiles%/wezterm/wezterm-gui.exe"]
-  #   bindings: ["alt+enter"]
+  - commands: ["shell-exec %ProgramFiles%/Wezterm/wezterm-gui.exe"]
+    bindings: ["alt+enter"]
 
   # Focus the next/previous workspace defined in `workspaces` config.
   - commands: ["focus --next-workspace"]
@@ -445,3 +439,8 @@ keybindings:
     bindings: ["alt+shift+8"]
   - commands: ["move --workspace 9", "focus --workspace 9"]
     bindings: ["alt+shift+9"]
+  - commands:
+      [
+        'shell-exec %ProgramFiles%/Wezterm/wezterm-gui.exe -e pwsh.exe -NoExit -Command "& { $Host.UI.RawUI.WindowTitle = ''TUI File Explorer - Yazi''; yazi }"',
+      ]
+    bindings: ["alt+e"]
