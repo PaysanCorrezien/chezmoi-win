@@ -126,8 +126,6 @@ workspaces:
     display_name: nf-md-youtube
   - name: "13"
     display_name: nf-cod-copilot
-  - name: "14"
-    display_name: nf-oct-file_directory
 
 window_rules:
   - commands: ["ignore"]
@@ -147,13 +145,19 @@ window_rules:
       - window_process: { equals: "Lively" }
         window_class: { regex: "HwndWrapper" }
 
+      # Ignore KeePassXC Auto-Type window
+      - window_process: { equals: "KeePassXC" }
+        window_title: { regex: "^Auto-Type - KeePassXC$" }
+        window_class: { equals: "Qt51511QWindowIcon" }
+
   # - commands: ["move --workspace 1"]
   #   match:
   #     - window_process: { equals: "wezterm-gui" }
   - commands: ["move --workspace 1"]
     match:
       - window_process: { equals: "wezterm-gui" }
-        window_title: { regex: "~" } # Match titles starting with '~' , seems wezterm do this on win ?
+        window_class: { not_equals: "YaziTerm" }
+        window_title: { regex: "~" }
 
   - commands: ["move --workspace 11"]
     match:
@@ -170,31 +174,43 @@ window_rules:
   # Specific rule for GitHub PWA
   - commands: ["move --workspace 4"]
     match:
-      - window_process: { equals: "Cursor" }
+      - window_process: { regex: "^Cursor -.*" }
 
   # General rule for all other browser windows
   - commands: ["move --workspace 5"]
     match:
-      - window_process: { regex: "msedge|brave|chrome" }
-        # window_title: { not_equals: "GitHub" } # Exclude GitHub PWA
-        window_title: { not_regex: "^(GitHub|Claude|ChatGPT|Youtube)$" } # Exclude PWAs
+      #- window_process: { regex: "msedge|brave|chrome" }
+      # window_title: { not_equals: "GitHub" } # Exclude GitHub PWA
+      #window_title: { not_regex: "^(GitHub|Claude|ChatGPT|Youtube)$" } # Exclude PWAs
+      - window_process: { equals: "msedge" }
+        window_class: { equals: "Chrome_WidgetWin_1" }
+        window_title: { regex: ".* - Microsoft()? Edge$" } # includes optional hidden character
 
   - commands: ["move --workspace 6"]
     match:
       - window_process: { equals: "Discord" }
       - window_process: { equals: "Vesktop" }
+        window_class: { equals: "Chrome_WidgetWin_1" }
+        window_title: { regex: ".*Discord.*" }
 
   - commands: ["move --workspace 7"]
     match:
       - window_process: { equals: "KeePassXC" }
+        window_class: { equals: "Qt51511QWindowIcon" }
 
   - commands: ["move --workspace 8"]
     match:
       - window_process: { equals: "ms-teams" }
+        window_class: { equals: "TeamsWebView" }
 
   - commands: ["move --workspace 9"]
     match:
+      # Hold outlook work fine
       - window_process: { equals: "OUTLOOK" }
+      # New outlook client
+      - window_process: { equals: "olk" }
+        window_class: { equals: "Olk Host" }
+        window_title: { regex: ".* - Outlook$" }
 
   #NOTE: the rules that move edge PWA need to go after the default edge rules
   - commands: ["move --workspace 12"]
@@ -250,13 +266,9 @@ window_rules:
       - window_process: { equals: "Todoist" }
       - window_process: { equals: "Taskmgr" }
       - window_process: { equals: "explorer" }
-
-      # - commands: ["set-floating", "move --workspace current"]
-      #   match:
-      - window_title: { regex: "TUI File Explorer - Yazi" }
       - window_title: { equals: "GitHub" }
-      # Alternatively, you can match by window class
-      # - window_class: { equals: 'YourWindowClass' }
+      - window_process: { equals: "wezterm-gui" }
+        window_class: { equals: "YaziTerm" }
 
   # - commands: ["ignore"]
   #   match:
@@ -441,6 +453,6 @@ keybindings:
     bindings: ["alt+shift+9"]
   - commands:
       [
-        'shell-exec %ProgramFiles%/Wezterm/wezterm-gui.exe -e pwsh.exe -NoExit -Command "& { $Host.UI.RawUI.WindowTitle = ''TUI File Explorer - Yazi''; yazi }"',
+        'shell-exec %ProgramFiles%/WezTerm/wezterm-gui.exe start --class YaziTerm -- pwsh.exe -NoExit -Command "& { $Host.UI.RawUI.WindowTitle = ''TUI File Explorer - Yazi''; yazi }"',
       ]
-    bindings: ["alt+e"]
+    bindings: ["lalt+e"]
