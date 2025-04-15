@@ -6,22 +6,29 @@ run = ["plugin copy-file-contents"]
 [[manager.prepend_keymap]]
 desc = "Zip the selected files"
 on = ["c", "Z"]
-run = ["plugin ouch --args=zip"]
+run = ["plugin ouch zip"]
 
+
+# FIXME: this is not working
 [[manager.prepend_keymap]]
 desc = "Cd to root of current Git repo"
 on = ["g", "r"]
-run = "shell 'ya pub dds-cd --str \"$(git rev-parse --show-toplevel)\"' --confirm"
+run = 'shell -- ya emit cd "$(git rev-parse --show-toplevel)"'
+
+[[manager.prepend_keymap]]
+desc = "Open with cusor"
+on = ["g", "c", "o"]
+run = "shell 'cursor %*'"
 
 [[manager.prepend_keymap]]
 desc = "cd to config directory"
 on = ["g", "c", "f", "g"]
-run = "cd %USERPROFILE%\\AppData\\Roaming"
+run = "cd %USERPROFILE%/AppData/Roaming"
 
 [[manager.prepend_keymap]]
 desc = "open new tab to config directory"
 on = ["t", "c", "f", "g"]
-run = "tab_create %USERPROFILE%\\AppData\\Roaming"
+run = "tab_create %USERPROFILE%/AppData/Roaming"
 
 [[manager.prepend_keymap]]
 desc = "move selection to config directory"
@@ -29,33 +36,33 @@ on = ["m", "c", "f", "g"]
 run = [
   "yank --cut",
   "escape --visual --select",
-  "%USERPROFILE%\\AppData\\Roaming",
+  "%USERPROFILE%/AppData/Roaming",
 ]
 
 [[manager.prepend_keymap]]
 desc = "copy selection to config directory"
 on = ["Y", "c", "f", "g"]
-run = ["yank", "escape --visual --select", "%USERPROFILE%\\AppData\\Roaming"]
+run = ["yank", "escape --visual --select", "%USERPROFILE%/AppData/Roaming"]
 
 [[manager.prepend_keymap]]
 desc = "cd to Downloads"
 on = ["g", "d", "d"]
-run = "cd %USERPROFILE%\\Downloads"
+run = "cd %USERPROFILE%/Downloads"
 
 [[manager.prepend_keymap]]
 desc = "open new tab to Downloads"
 on = ["t", "d", "d"]
-run = "tab_create %USERPROFILE%\\Downloads"
+run = "tab_create %USERPROFILE%/Downloads"
 
 [[manager.prepend_keymap]]
 desc = "move selection to Downloads"
 on = ["m", "d", "d"]
-run = ["yank --cut", "escape --visual --select", "%USERPROFILE%\\Downloads"]
+run = ["yank --cut", "escape --visual --select", "%USERPROFILE%/Downloads"]
 
 [[manager.prepend_keymap]]
 desc = "copy selection to Downloads"
 on = ["Y", "d", "d"]
-run = ["yank", "escape --visual --select", "%USERPROFILE%\\Downloads"]
+run = ["yank", "escape --visual --select", "%USERPROFILE%/Downloads"]
 
 [[manager.prepend_keymap]]
 desc = "cd to home directory"
@@ -79,69 +86,73 @@ run = ["yank", "escape --visual --select", "%USERPROFILE%"]
 
 [[manager.prepend_keymap]]
 desc = "cd to Pictures"
-on = ["g", "p", "c"]
-run = "cd %USERPROFILE%\\Pictures"
+on = ["g", "i"]
+run = "cd %USERPROFILE%/Pictures"
+
+[[manager.prepend_keymap]]
+desc = "cd to Wallpaper"
+on = ["g", "w"]
+run = "cd %USERPROFILE%/Nextcloud/Configuration/Wallpaper"
 
 [[manager.prepend_keymap]]
 desc = "open new tab to Pictures"
-on = ["t", "p", "c"]
-run = "tab_create %USERPROFILE%\\Pictures"
+on = ["t", "i"]
+run = "tab_create %USERPROFILE%/Pictures"
 
 [[manager.prepend_keymap]]
 desc = "move selection to Pictures"
-on = ["m", "p", "c"]
-run = ["yank --cut", "escape --visual --select", "%USERPROFILE%\\Pictures"]
+on = ["m", "i"]
+run = ["yank --cut", "escape --visual --select", "%USERPROFILE%/Pictures"]
 
 [[manager.prepend_keymap]]
 desc = "copy selection to Pictures"
-on = ["Y", "p", "c"]
-run = ["yank", "escape --visual --select", "%USERPROFILE%\\Pictures"]
+on = ["Y", "i"]
+run = ["yank", "escape --visual --select", "%USERPROFILE%/Pictures"]
 
 [[manager.prepend_keymap]]
-desc = "cd to projects"
-on = ["g", "p", "p"]
-run = "cd %USERPROFILE%\\projects"
+desc = "cd to repositories"
+on = ["g", "r"]
+run = "cd %USERPROFILE%/repo"
 
 [[manager.prepend_keymap]]
 desc = "open new tab to projects"
 on = ["t", "p", "p"]
-run = "tab_create %USERPROFILE%\\projects"
+run = "tab_create %USERPROFILE%/projects"
 
 [[manager.prepend_keymap]]
 desc = "move selection to projects"
 on = ["m", "p", "p"]
-run = ["yank --cut", "escape --visual --select", "%USERPROFILE%\\projects"]
+run = ["yank --cut", "escape --visual --select", "%USERPROFILE%/projects"]
 
 [[manager.prepend_keymap]]
 desc = "copy selection to projects"
 on = ["Y", "p", "p"]
-run = ["yank", "escape --visual --select", "%USERPROFILE%\\projects"]
+run = ["yank", "escape --visual --select", "%USERPROFILE%/projects"]
 
 [[manager.prepend_keymap]]
 desc = "cd to Videos"
 on = ["g", "v", "d"]
-run = "cd %USERPROFILE%\\Videos"
+run = "cd %USERPROFILE%/Videos"
 
 [[manager.prepend_keymap]]
 desc = "open new tab to Videos"
 on = ["t", "v", "d"]
-run = "tab_create %USERPROFILE%\\Videos"
+run = "tab_create %USERPROFILE%/Videos"
 
 [[manager.prepend_keymap]]
 desc = "move selection to Videos"
 on = ["m", "v", "d"]
-run = ["yank --cut", "escape --visual --select", "%USERPROFILE%\\Videos"]
+run = ["yank --cut", "escape --visual --select", "%USERPROFILE%/Videos"]
 
 [[manager.prepend_keymap]]
 desc = "copy selection to Videos"
 on = ["Y", "v", "d"]
-run = ["yank", "escape --visual --select", "%USERPROFILE%\\Videos"]
+run = ["yank", "escape --visual --select", "%USERPROFILE%/Videos"]
 
 [[manager.prepend_keymap]]
 desc = "open new tab in current directory"
 on = ["t", "t"]
 run = "tab_create"
-
 
 [[manager.prepend_keymap]]
 desc = "Paste into the hovered directory or CWD"
@@ -150,16 +161,17 @@ run = "plugin smart-paste"
 
 [[manager.prepend_keymap]]
 on = "k"
-run = "plugin arrow --args=-1"
+run = "plugin arrow -1"
 
 [[manager.prepend_keymap]]
 on = "j"
-run = "plugin arrow --args=1"
+run = "plugin arrow 1"
 
+# keymap.toml
 [[manager.prepend_keymap]]
-desc = "Maximize or restore preview"
 on = "T"
-run = "plugin max-preview"
+run = "plugin toggle-pane max-preview"
+desc = "Maximize or restore the preview pane"
 
 [[manager.prepend_keymap]]
 desc = "Copy selected files to system clipboard"
@@ -171,42 +183,88 @@ desc = "Chmod on selected files"
 on = ["c", "m"]
 run = "plugin chmod"
 
-[[manager.prepend_keymap]]
-desc = "Maximize or restore preview"
-on = "T"
-run = "plugin --sync max-preview"
-
 # [[manager.prepend_keymap]]
 # desc = "Keyjump (once Global mode)"
 # on = ["f"]
-# run = "plugin keyjump --args='global once enter'"
+# run = "plugin keyjump 'global once enter'"
 
 [[manager.prepend_keymap]]
-desc = "Enter the child directory, or open the file"
 on = "l"
 run = "plugin smart-enter"
+desc = "Enter the child directory, or open the file"
 
 [[manager.prepend_keymap]]
 desc = "Open File Details"
 on = ["c", "P"]
-run = "plugin windows --args='properties'"
+run = "plugin windows 'properties'"
 
 [[manager.prepend_keymap]]
 desc = "Open PowerShell Here"
 on = ["g", "p"]
-run = "plugin windows --args='powershell'"
+run = "plugin windows 'powershell'"
 
 [[manager.prepend_keymap]]
 desc = "Open PowerShell Admin"
 on = ["g", "P"]
-run = "plugin windows --args='powershell_admin'"
+run = "plugin windows 'powershell_admin'"
 
 [[manager.prepend_keymap]]
 desc = "Set as Wallpapar"
 on = ["m", "W"]
-run = "plugin windows --args='set-wallpaper'"
+run = "plugin windows 'set-wallpaper'"
 
 [[manager.prepend_keymap]]
 desc = "Open Widows Explorer"
 on = ["g", "E"]
-run = "plugin windows --args='open-explorer'"
+run = "plugin windows 'open-explorer'"
+
+#HACK: move to drives
+[[manager.prepend_keymap]]
+on = ["D", "c"]
+run = "cd C:"
+desc = "Switch to C drive"
+
+[[manager.prepend_keymap]]
+on = ["D", "d"]
+run = "cd D:"
+desc = "Switch to D drive"
+
+[[manager.prepend_keymap]]
+on = ["D", "e"]
+run = "cd E:"
+desc = "Switch to E drive"
+
+[[manager.prepend_keymap]]
+on = ["D", "f"]
+run = "cd F:"
+desc = "Switch to F drive"
+
+[[manager.prepend_keymap]]
+on = ["D", "g"]
+run = "cd g:"
+desc = "Switch to G drive"
+
+[[manager.prepend_keymap]]
+on = ["D", "s"]
+run = "cd S:"
+desc = "Switch to S drive"
+
+[[manager.prepend_keymap]]
+on = ["D", "t"]
+run = "cd T:"
+desc = "Switch to T drive"
+
+[[manager.prepend_keymap]]
+on = ["D", "w"]
+run = "cd W:"
+desc = "Switch to W drive"
+
+[[manager.prepend_keymap]]
+on = ["D", "z"]
+run = "cd Z:"
+desc = "Switch to Z drive"
+
+[[manager.prepend_keymap]]
+on = "F"
+run = "plugin smart-filter"
+desc = "Smart filter"

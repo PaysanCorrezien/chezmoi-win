@@ -1,14 +1,52 @@
-[plugin]
-deps = [
-  { use = "AnirudhG07/plugins-yazi:copy-file-contents", rev = "11167e1" },
-  { use = "Reledia/glow", rev = "5ce76dc" },
-  { use = "ndtoan96/ouch", rev = "b869886" },
-  { use = "orhnk/system-clipboard", rev = "7775a80" },
-  { use = "yazi-rs/plugins:max-preview", rev = "71c4fc2" },
-  { use = "yazi-rs/plugins:smart-enter", rev = "71c4fc2" },
-  { use = "Rolv-Apneseth/starship", rev = "9c37d37" },
-  { use = "yazi-rs/plugins:full-border", rev = "71c4fc2" },
-]
+[[plugin.deps]]
+use = "AnirudhG07/plugins-yazi:copy-file-contents"
+rev = "524c52c"
+hash = "6cb8c3d1a25318ecbd7e8036db083f9"
+
+[[plugin.deps]]
+use = "Reledia/glow"
+rev = "c76bf4f"
+hash = "7246659779ff5bca5f4a461bdab6e8df"
+
+[[plugin.deps]]
+use = "ndtoan96/ouch"
+rev = "558188d"
+hash = "fc4c729556c3067f43d5322bce57faf3"
+
+[[plugin.deps]]
+use = "orhnk/system-clipboard"
+rev = "efb8f03"
+hash = "c96bbca8ab5ecf556e45da0007170097"
+
+[[plugin.deps]]
+use = "yazi-rs/plugins:max-preview"
+rev = "9a09505"
+hash = "ecff23866162cc9bb0de35d5633e26c3"
+
+[[plugin.deps]]
+use = "yazi-rs/plugins:smart-enter"
+rev = "9a09505"
+hash = "2d3c17251b47e9e59535247ad8013814"
+
+[[plugin.deps]]
+use = "Rolv-Apneseth/starship"
+rev = "6c639b4"
+hash = "f0aaa1fffa27f0747a378fe161e17259"
+
+[[plugin.deps]]
+use = "yazi-rs/plugins:full-border"
+rev = "9a09505"
+hash = "6882ed11f8efed32c9de32c9d9222b57"
+
+[[plugin.deps]]
+use = "yazi-rs/plugins:toggle-pane"
+rev = "b12a9ab"
+hash = "42f1b81f05b73072bb92df226b938d00"
+
+[[plugin.deps]]
+use = "yazi-rs/plugins:smart-filter"
+rev = "b12a9ab"
+hash = "979899d87f80e306b5cb091b180a66aa"
 
 [flavor]
 deps = []
