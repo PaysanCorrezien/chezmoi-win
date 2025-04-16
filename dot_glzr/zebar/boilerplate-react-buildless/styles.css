@@ -2,7 +2,7 @@
  * Import the Nerdfonts icon font.
  * Ref https://www.nerdfonts.com/cheat-sheet for a cheatsheet of available Nerdfonts icons.
  */
-@import 'https://www.nerdfonts.com/assets/css/webfont.css';
+@import "https://www.nerdfonts.com/assets/css/webfont.css";
 
 /* Rose Pine theme colors */
 :root {
@@ -26,17 +26,42 @@ i {
 }
 
 /* Colorful icons */
-.workspace i { color: var(--rose-foam); }
-.date-widget i { color: var(--rose-gold); }
-.media-widget i { color: var(--rose-love); }
-.widget i.nf-fae-chip { color: var(--rose-pine); }
-.widget i.nf-oct-cpu { color: var(--rose-rose); }
-.widget i.nf-fa-battery_4 { color: var(--rose-foam); }
-.widget i.nf-md-power_plug { color: var(--rose-gold); }
-.widget i.nf-md-volume_high { color: var(--rose-iris); }
-.widget i.nf-md-weather_partly_cloudy { color: var(--rose-gold); }
-.widget i.nf-md-download { color: var(--rose-foam); }
-.widget i.nf-md-upload { color: var(--rose-love); }
+.workspace i {
+  color: var(--rose-foam);
+}
+.date-widget i {
+  color: var(--rose-gold);
+}
+.media-widget i {
+  color: var(--rose-love);
+}
+.widget i.nf-fae-chip {
+  color: var(--rose-pine);
+}
+.widget i.nf-oct-cpu {
+  color: var(--rose-rose);
+}
+.widget i.nf-fa-battery_4 {
+  color: var(--rose-foam);
+}
+.widget i.nf-md-power_plug {
+  color: var(--rose-gold);
+}
+.widget i.nf-md-volume_high {
+  color: var(--rose-iris);
+}
+.widget i.nf-md-weather_partly_cloudy {
+  color: var(--rose-gold);
+}
+.widget i.nf-md-keyboard {
+  color: var(--rose-gold);
+}
+.widget i.nf-md-download {
+  color: var(--rose-foam);
+}
+.widget i.nf-md-upload {
+  color: var(--rose-love);
+}
 
 body {
   color: var(--rose-text);
@@ -223,4 +248,6 @@ body,
 }
 
 /* Update colorful icons section */
-.widget i.nf-md-wifi { color: var(--rose-foam); }
+.widget i.nf-md-wifi {
+  color: var(--rose-foam);
+}

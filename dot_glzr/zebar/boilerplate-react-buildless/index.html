@@ -24,26 +24,27 @@
     <div id="root"></div>
 
     <script type="text/babel" data-type="module">
-      import React, {
-        useState,
-        useEffect,
-      } from 'https://esm.sh/react@18?dev';
-      import { createRoot } from 'https://esm.sh/react-dom@18/client?dev';
-      import * as zebar from 'https://esm.sh/zebar@2';
+      import React, { useState, useEffect } from "https://esm.sh/react@18?dev";
+      import { createRoot } from "https://esm.sh/react-dom@18/client?dev";
+      import * as zebar from "https://esm.sh/zebar@2";
 
       const providers = zebar.createProviderGroup({
-        glazewm: { type: 'glazewm' },
-        cpu: { type: 'cpu' },
-        battery: { type: 'battery' },
-        memory: { type: 'memory' },
-        weather: { type: 'weather' },
-        date: { type: 'date', formatting: 'EEE d MMM t' },
-        audio: { type: 'audio' },
-        media: { type: 'media' },
-        network: { type: 'network' },
+        glazewm: { type: "glazewm" },
+        cpu: { type: "cpu" },
+        battery: { type: "battery" },
+        memory: { type: "memory" },
+        weather: { type: "weather" },
+        date: { type: "date", formatting: "EEE d MMM t" },
+        audio: { type: "audio" },
+        keyboard: {
+          type: "keyboard",
+          refreshInterval: 2000, // Update every 2 seconds, adjust as needed
+        },
+        media: { type: "media" },
+        network: { type: "network" },
       });
 
-      createRoot(document.getElementById('root')).render(<App />);
+      createRoot(document.getElementById("root")).render(<App />);
 
       function App() {
         const [output, setOutput] = useState(providers.outputMap);
@@ -54,13 +55,13 @@
 
         // Format bytes to human readable (for memory display)
         function formatBytes(bytes) {
-          if (!bytes) return '0B';
-          return (bytes / (1024 * 1024 * 1024)).toFixed(1) + 'GB';
+          if (!bytes) return "0B";
+          return (bytes / (1024 * 1024 * 1024)).toFixed(1) + "GB";
         }
 
         // Check if string is a valid Nerdfont icon class
         function isValidNerdFont(str) {
-          return str?.startsWith('nf-') && str.split('-').length >= 3;
+          return str?.startsWith("nf-") && str.split("-").length >= 3;
         }
 
         return (
@@ -69,9 +70,9 @@
               {output.glazewm && (
                 <div className="workspaces-container">
                   <div className="workspaces">
-                    {output.glazewm.currentWorkspaces.map(workspace => (
+                    {output.glazewm.currentWorkspaces.map((workspace) => (
                       <button
-                        className={`workspace ${workspace.hasFocus ? 'focused' : ''} ${workspace.isDisplayed ? 'displayed' : ''}`}
+                        className={`workspace ${workspace.hasFocus ? "focused" : ""} ${workspace.isDisplayed ? "displayed" : ""}`}
                         onClick={() =>
                           output.glazewm.runCommand(
                             `focus --workspace ${workspace.name}`,
@@ -82,7 +83,9 @@
                         {isValidNerdFont(workspace.displayName) ? (
                           <i className={`nf ${workspace.displayName}`}></i>
                         ) : (
-                          <span className="workspace-name">{workspace.displayName || workspace.name}</span>
+                          <span className="workspace-name">
+                            {workspace.displayName || workspace.name}
+                          </span>
                         )}
                       </button>
                     ))}
@@ -97,10 +100,16 @@
                   <i className="nf nf-md-music_note"></i>
                   <span className="media-title">
                     {output.media.currentSession.title}
-                    {output.media.currentSession.artist && ` - ${output.media.currentSession.artist}`}
+                    {output.media.currentSession.artist &&
+                      ` - ${output.media.currentSession.artist}`}
                   </span>
-                  <button className="media-control" onClick={() => output.media?.togglePlayPause()}>
-                    <i className={`nf ${output.media.currentSession.isPlaying ? 'nf-md-pause' : 'nf-md-play'}`}></i>
+                  <button
+                    className="media-control"
+                    onClick={() => output.media?.togglePlayPause()}
+                  >
+                    <i
+                      className={`nf ${output.media.currentSession.isPlaying ? "nf-md-pause" : "nf-md-play"}`}
+                    ></i>
                   </button>
                 </div>
               )}
@@ -127,11 +136,17 @@
                       <div className="network-speeds">
                         <div className="network-speed">
                           <i className="nf nf-md-download"></i>
-                          {output.network.traffic.received.siValue.toFixed(1)} {output.network.traffic.received.siUnit}/s
+                          {output.network.traffic.received.siValue.toFixed(
+                            1,
+                          )}{" "}
+                          {output.network.traffic.received.siUnit}/s
                         </div>
                         <div className="network-speed">
                           <i className="nf nf-md-upload"></i>
-                          {output.network.traffic.transmitted.siValue.toFixed(1)} {output.network.traffic.transmitted.siUnit}/s
+                          {output.network.traffic.transmitted.siValue.toFixed(
+                            1,
+                          )}{" "}
+                          {output.network.traffic.transmitted.siUnit}/s
                         </div>
                       </div>
                     )}
@@ -141,16 +156,26 @@
                 {output.memory && (
                   <div className="widget">
                     <i className="nf nf-fae-chip"></i>
-                    {Math.round(output.memory.usage)}% - {formatBytes(output.memory.usedMemory)}
+                    {Math.round(output.memory.usage)}% -{" "}
+                    {formatBytes(output.memory.usedMemory)}
                   </div>
                 )}
 
                 {output.cpu && (
                   <div className="widget">
                     <i className="nf nf-oct-cpu"></i>
-                    <span className={output.cpu.usage > 85 ? 'high-usage' : ''}>
+                    <span className={output.cpu.usage > 85 ? "high-usage" : ""}>
                       {Math.round(output.cpu.usage)}%
                     </span>
+                  </div>
+                )}
+
+                {output.keyboard && (
+                  <div className="widget">
+                    <i className="nf nf-md-keyboard"></i>
+                    {output.keyboard.layout
+                      ? output.keyboard.layout.trim().slice(-3).toUpperCase()
+                      : ""}
                   </div>
                 )}
 
