@@ -5,13 +5,13 @@ hash = "6cb8c3d1a25318ecbd7e8036db083f9"
 
 [[plugin.deps]]
 use = "Reledia/glow"
-rev = "c76bf4f"
-hash = "7246659779ff5bca5f4a461bdab6e8df"
+rev = "2da96e3"
+hash = "2540c4bcb855c39a413d6a0dcea07c06"
 
 [[plugin.deps]]
 use = "ndtoan96/ouch"
-rev = "558188d"
-hash = "fc4c729556c3067f43d5322bce57faf3"
+rev = "2496cd9"
+hash = "73fc3855e13f8c28faf6114fc5de38ab"
 
 [[plugin.deps]]
 use = "orhnk/system-clipboard"
@@ -20,22 +20,22 @@ hash = "c96bbca8ab5ecf556e45da0007170097"
 
 [[plugin.deps]]
 use = "yazi-rs/plugins:max-preview"
-rev = "9a09505"
+rev = "b12a9ab"
 hash = "ecff23866162cc9bb0de35d5633e26c3"
 
 [[plugin.deps]]
 use = "yazi-rs/plugins:smart-enter"
-rev = "9a09505"
+rev = "b12a9ab"
 hash = "2d3c17251b47e9e59535247ad8013814"
 
 [[plugin.deps]]
 use = "Rolv-Apneseth/starship"
-rev = "6c639b4"
-hash = "f0aaa1fffa27f0747a378fe161e17259"
+rev = "c070754"
+hash = "f3631eae21eb1c2fa47987994833b6d6"
 
 [[plugin.deps]]
 use = "yazi-rs/plugins:full-border"
-rev = "9a09505"
+rev = "b12a9ab"
 hash = "6882ed11f8efed32c9de32c9d9222b57"
 
 [[plugin.deps]]
@@ -47,6 +47,11 @@ hash = "42f1b81f05b73072bb92df226b938d00"
 use = "yazi-rs/plugins:smart-filter"
 rev = "b12a9ab"
 hash = "979899d87f80e306b5cb091b180a66aa"
+
+[[plugin.deps]]
+use = "yazi-rs/plugins:vcs-files"
+rev = "b12a9ab"
+hash = "3c69d3a10c9849b19a143ae9d9a04abc"
 
 [flavor]
 deps = []

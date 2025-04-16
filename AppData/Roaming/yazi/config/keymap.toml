@@ -5,9 +5,8 @@ run = ["plugin copy-file-contents"]
 
 [[manager.prepend_keymap]]
 desc = "Zip the selected files"
+run = ["plugin ouch"]
 on = ["c", "Z"]
-run = ["plugin ouch zip"]
-
 
 # FIXME: this is not working
 [[manager.prepend_keymap]]
@@ -268,3 +267,8 @@ desc = "Switch to Z drive"
 on = "F"
 run = "plugin smart-filter"
 desc = "Smart filter"
+
+[[manager.prepend_keymap]]
+on = ["g", "g"]
+run = "plugin vcs-files"
+desc = "Show Git file changes"
