@@ -20,6 +20,13 @@ function ll
 { Get-ChildItem -Force @args 
 }
 
+if (-not (Get-Process -Name gpg-agent -ErrorAction SilentlyContinue)) {
+  #  gpgconf --launch gpg-agent
+    Start-Process 'C:\Program Files (x86)\gnupg\bin\gpgconf.exe' `
+        -ArgumentList '--launch gpg-agent' `
+        -WindowStyle Hidden
+}
+
 $env:POWERSHELL_UPDATECHECK = "Off"
 
 Set-PSReadLineOption -CompletionQueryItems 1000 #NOTE: pager dont bother with number of items
@@ -217,6 +224,7 @@ function Reload-Powershell
   }
 }
 $env:HOME = $env:USERPROFILE
+$Env:POWERSHELL_UPDATECHECK = 'Off'
 
 # NOTE: https://carapace-sh.github.io/carapace-bin/setup.html
 $env:CARAPACE_BRIDGES = 'zsh,fish,bash,inshellisense' # optional
