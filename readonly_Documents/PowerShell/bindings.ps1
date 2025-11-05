@@ -105,4 +105,13 @@ Set-PSReadLineKeyHandler -Key Ctrl+y -Function Redo
 # Set-PSReadLineKeyHandler -Key Ctrl+e -ScriptBlock { Edit-CustomEditor }
 
 Set-PSReadLineKeyHandler -Chord Ctrl+e -Function ViEditVisually
+# use history as the prediction source
+Set-PSReadLineOption -PredictionSource HistoryAndPlugin
+# show predictions in a pop-up list
+Set-PSReadLineOption -PredictionViewStyle ListView
 
+# bind Ctrl+P / Ctrl+N to navigate that list
+Set-PSReadLineKeyHandler -Chord Ctrl+p -Function PreviousSuggestion
+Set-PSReadLineKeyHandler -Chord Ctrl+n -Function NextSuggestion
+
+#Set-PSReadLineKeyHandler -Chord Ctrl+h -Function ShowParameterHelp

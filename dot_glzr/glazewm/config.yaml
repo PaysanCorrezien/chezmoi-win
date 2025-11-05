@@ -26,7 +26,7 @@ general:
     # Trigger for cursor jump:
     # - 'monitor_focus': Jump when focus changes between monitors.
     # - 'window_focus': Jump when focus changes between windows.
-    trigger: "monitor_focus"
+    trigger: "window_focus"
 
 gaps:
   # Whether to scale the gaps with the DPI of the monitor.
@@ -52,6 +52,9 @@ window_effects:
       # color: "#8dbcff"
       color: "#9ccfd8"
 
+    transparency:
+      enabled: true
+      opacity: "90%"
     # Remove the title bar from the window's frame. Note that this can
     # cause rendering issues for some applications.
     hide_title_bar:
@@ -141,10 +144,24 @@ window_rules:
       - window_process: { equals: "PowerToys" }
         window_class: { regex: 'HwndWrapper\[PowerToys\.PowerAccent.*?\]' }
       - window_process: { equals: "PowerToys" }
-        window_title: { regex: ".*? - Peek" }
+      #new Command
+      - window_title: { regex: "Command Palette" }
+      - window_title: { regex: ".*? - Peek" }
       - window_process: { equals: "Lively" }
         window_class: { regex: "HwndWrapper" }
 
+      - window_process: { equals: "tauri-components" }
+        window_title: { equals: "Audio Recorder" }
+      - window_process: { equals: "tauri-components" }
+        window_title: { equals: "Bottom Bar" }
+      - window_process: { equals: "tauri-components" }
+        window_title: { equals: "Right Notification" }
+      - window_process: { equals: "tauri-components" }
+        window_title: { equals: "Search" }
+      - window_process: { equals: "tauri-components" }
+        window_title: { equals: "Element Selector" }
+      - window_process: { equals: "brassens" }
+        window_title: { equals: "Audio Recorder" }
       # Ignore KeePassXC Auto-Type window
       - window_process: { equals: "KeePassXC" }
         window_title: { regex: "^Auto-Type - KeePassXC$" }
@@ -170,11 +187,12 @@ window_rules:
 
   - commands: ["move --workspace 3"]
     match:
-      - window_process: { equals: "Chatgpt" }
-  # Specific rule for GitHub PWA
+      - window_process: { equals: "ChatGPT" }
+
   - commands: ["move --workspace 4"]
     match:
-      - window_process: { regex: "^Cursor -.*" }
+      - window_process: { equals: "Cursor" }
+        window_class: { equals: "Chrome_WidgetWin_1" }
 
   # General rule for all other browser windows
   - commands: ["move --workspace 5"]
@@ -184,7 +202,7 @@ window_rules:
       #window_title: { not_regex: "^(GitHub|Claude|ChatGPT|Youtube)$" } # Exclude PWAs
       - window_process: { equals: "msedge" }
         window_class: { equals: "Chrome_WidgetWin_1" }
-        window_title: { regex: ".* - Microsoft()? Edge$" } # includes optional hidden character
+        #window_title: { regex: ".* - Microsoft Edge$" } # includes optional hidden character
 
   - commands: ["move --workspace 6"]
     match:
@@ -220,9 +238,13 @@ window_rules:
 
   - commands: ["move --workspace 13"]
     match:
+      # The web apps PWA
       # - window_title: { equals: "Claude*" }
       - window_process: { regex: "msedge|brave|chrome" }
         window_title: { regex: ".*Claude.*" }
+        # The desktop APP
+      - window_process: { regex: "claude" }
+        window_title: { regex: "^Claude$" }
 
   - commands: ["move --workspace 2"]
     match:
@@ -386,10 +408,10 @@ keybindings:
     bindings: ["alt+enter"]
 
   # Focus the next/previous workspace defined in `workspaces` config.
-  - commands: ["focus --next-workspace"]
-    bindings: ["alt+s"]
-  - commands: ["focus --prev-workspace"]
-    bindings: ["alt+a"]
+  # - commands: ["focus --next-workspace"]
+  #   bindings: ["alt+s"]
+  # - commands: ["focus --prev-workspace"]
+  #   bindings: ["alt+a"]
 
   # Focus the workspace that last had focus.
   - commands: ["focus --recent-workspace"]
@@ -456,3 +478,5 @@ keybindings:
         'shell-exec %ProgramFiles%/WezTerm/wezterm-gui.exe start --class YaziTerm -- pwsh.exe -NoExit -Command "& { $Host.UI.RawUI.WindowTitle = ''TUI File Explorer - Yazi''; yazi }"',
       ]
     bindings: ["lalt+e"]
+  - commands: ["shell-exec text_corrector.exe"]
+    bindings: ["lalt+shift+g"]
