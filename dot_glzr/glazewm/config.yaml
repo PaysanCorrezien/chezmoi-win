@@ -2,11 +2,11 @@ general:
   # Commands to run when the WM has started. This is useful for running a
   # script or launching another application.
   # Example: The below command launches Zebar.
-  startup_commands: ["shell-exec zebar"]
+  # startup_commands: ["shell-exec zebar"]
 
   # Commands to run just before the WM is shutdown.
   # Example: The below command kills Zebar.
-  shutdown_commands: ["shell-exec taskkill /IM zebar.exe /F"]
+  # shutdown_commands: ["shell-exec taskkill /IM zebar.exe /F"]
 
   # Commands to run after the WM config is reloaded.
   config_reload_commands: []
@@ -33,14 +33,14 @@ gaps:
   scale_with_dpi: true
 
   # Gap between adjacent windows.
-  inner_gap: "20px"
+  inner_gap: "10px"
 
   # Gap between windows and the screen edge.
   outer_gap:
-    top: "60px"
-    right: "20px"
-    bottom: "20px"
-    left: "20px"
+    top: "10px"
+    right: "10px"
+    bottom: "10px"
+    left: "10px"
 
 window_effects:
   # Visual effects to apply to the focused window.
@@ -106,35 +106,38 @@ window_behavior:
 #NOTE: https://www.nerdfonts.com/cheat-sheet
 workspaces:
   - name: "1"
-    display_name: nf-fa-terminal
   - name: "2"
-    display_name: nf-cod-remote_explorer
   - name: "3"
-    display_name: nf-md-robot_angry_outline
+    ## display_name: nf-md-robot_angry_outline
   - name: "4"
-    display_name: nf-custom-neovim
+    ## display_name: nf-custom-neovimy
   - name: "5"
-    display_name: nf-fa-edge
+    ## display_name: nf-fa-edge
   - name: "6"
-    display_name: nf-fa-discord
+    ## display_name: nf-fa-discord
   - name: "7"
-    display_name: nf-md-key_chain_variant
+    ## display_name: nf-md-key_chain_variant
   - name: "8"
-    display_name: nf-md-microsoft_teams
+    ## display_name: nf-md-microsoft_teams
   - name: "9"
-    display_name: nf-md-microsoft_outlook
+    ## display_name: nf-md-microsoft_outlook
   - name: "11"
-    display_name: nf-md-notebook
+    ## display_name: nf-md-notebook
   - name: "12"
-    display_name: nf-md-youtube
+    ## display_name: nf-md-youtube
   - name: "13"
-    display_name: nf-cod-copilot
+    ##  display_name: nf-cod-copilot
+  - name: "14"
+
+  - name: "15"
 
 window_rules:
   - commands: ["ignore"]
     match:
       # Ignores any Zebar windows.
       - window_process: { equals: "zebar" }
+
+      - window_class: { equals: "NUIDialog" }
 
       # Ignores picture-in-picture windows for browsers.
       - window_title: { regex: "[Pp]icture.in.[Pp]icture" }
@@ -166,6 +169,45 @@ window_rules:
       - window_process: { equals: "KeePassXC" }
         window_title: { regex: "^Auto-Type - KeePassXC$" }
         window_class: { equals: "Qt51511QWindowIcon" }
+      - window_process: { equals: "KeePassXC" }
+        window_title: { regex: "^Saisie automatique [–-] KeePassXC$" }
+        window_class: { equals: "Qt51511QWindowIcon" }
+      # Ignore Outlook alert/reminder dialogs
+      - window_process: { equals: "OUTLOOK" }
+        window_class: { equals: "#32770" }
+      - window_process: { equals: "OUTLOOK" }
+        window_title: { regex: ".*rappel.*" }
+      # Ignore Excel Find/Replace dialog
+      - window_process: { equals: "EXCEL" }
+        window_title: { regex: "Rechercher.*" }
+      # Ignore Windows Explorer system windows that can get stuck
+      - window_process: { equals: "explorer" }
+        window_class: { equals: "XamlExplorerHostIslandWindow" }
+# Outlook rules for workspace 9
+# Rule 1: Explicitly match Outlook email windows by class name
+  - commands: ["set-tiling", "move --workspace 9"]
+    match:
+      - window_process: { equals: "OUTLOOK" }
+        window_class: { equals: "rctrl_renwnd32" }
+      - window_process: { equals: "OUTLOOK" }
+        window_class: { equals: "MsoSplash" }
+
+# Rule 2: Catch all other Outlook windows
+  - commands: ["set-tiling", "move --workspace 9"]
+    match:
+      # Outlook classique (Win32)
+      - window_process: { equals: "OUTLOOK" }
+      # "Nouvel Outlook" (certaines builds = olk.exe)
+      - window_process: { equals: "olk" }
+      # Ancienne appli Courrier/Calendrier (HxOutlook)
+      - window_process: { equals: "HxOutlook" }
+      # Filet de sécurité : toute fenêtre dont le titre contient "Outlook"
+      # (couvre Outlook Web, et certains conteneurs WebView2)
+      - window_title:  { regex: "Outlook" }
+      # New outlook client
+      - window_process: { equals: "olk" }
+        window_class: { equals: "Olk Host" }
+        window_title: { regex: ".* - Outlook$" }
 
   # - commands: ["move --workspace 1"]
   #   match:
@@ -179,6 +221,7 @@ window_rules:
   - commands: ["move --workspace 11"]
     match:
       - window_process: { equals: "Obsidian" }
+      - window_process: { equals: "WINWORD" }
 
   - commands: ["move --workspace 12"]
     match:
@@ -221,14 +264,7 @@ window_rules:
       - window_process: { equals: "ms-teams" }
         window_class: { equals: "TeamsWebView" }
 
-  - commands: ["move --workspace 9"]
-    match:
-      # Hold outlook work fine
-      - window_process: { equals: "OUTLOOK" }
-      # New outlook client
-      - window_process: { equals: "olk" }
-        window_class: { equals: "Olk Host" }
-        window_title: { regex: ".* - Outlook$" }
+ 
 
   #NOTE: the rules that move edge PWA need to go after the default edge rules
   - commands: ["move --workspace 12"]
@@ -254,7 +290,7 @@ window_rules:
   - commands: ["set-floating"]
     match:
       - window_process: { equals: "EXCEL" }
-        window_title: { regex: "Annuaire" }
+        window_title: { regex: "Listing téléphone" }
 
   # Then move non-Annuaire Excel to workspace 6
   - commands: ["move --workspace 6"]
@@ -267,6 +303,7 @@ window_rules:
   - commands: ["set-floating"]
     match:
       - window_process: { equals: "Console2010.exe" }
+      - window_process: { equals: "Greenshot" }
 
   # Communication apps to workspace 8
   - commands: ["move --workspace 8"]
@@ -291,6 +328,9 @@ window_rules:
       - window_title: { equals: "GitHub" }
       - window_process: { equals: "wezterm-gui" }
         window_class: { equals: "YaziTerm" }
+      - window_process: { equals: "UniGetUI" }
+      - window_process: { equals: "Brassens" }
+        window_title: { equals: "Brassens" }
 
   # - commands: ["ignore"]
   #   match:
@@ -312,171 +352,180 @@ binding_modes:
       - commands: ["wm-disable-binding-mode --name resize"]
         bindings: ["escape", "enter"]
 
-  # When enabled, all keybindings are disabled except for alt+shift+p which
+  # When enabled, all keybindings are disabled except for lmenu+shift+p which
   # returns to default keybindings.
   - name: "pause"
     keybindings:
       - commands: ["wm-disable-binding-mode --name pause"]
-        bindings: ["alt+shift+p"]
+        bindings: ["lmenu+shift+p"]
 
 keybindings:
   # Shift focus in a given direction.
   - commands: ["focus --direction left"]
-    bindings: ["alt+h", "alt+left"]
+    bindings: ["lmenu+h", "lmenu+left"]
   - commands: ["focus --direction right"]
-    bindings: ["alt+l", "alt+right"]
+    bindings: ["lmenu+l", "lmenu+right"]
   - commands: ["focus --direction up"]
-    bindings: ["alt+k", "alt+up"]
+    bindings: ["lmenu+k", "lmenu+up"]
   - commands: ["focus --direction down"]
-    bindings: ["alt+j", "alt+down"]
+    bindings: ["lmenu+j", "lmenu+down"]
 
   # Move focused window in a given direction.
   - commands: ["move --direction left"]
-    bindings: ["alt+shift+h", "alt+shift+left"]
+    bindings: ["lmenu+shift+h", "lmenu+shift+left"]
   - commands: ["move --direction right"]
-    bindings: ["alt+shift+l", "alt+shift+right"]
+    bindings: ["lmenu+shift+l", "lmenu+shift+right"]
   - commands: ["move --direction up"]
-    bindings: ["alt+shift+k", "alt+shift+up"]
+    bindings: ["lmenu+shift+k", "lmenu+shift+up"]
   - commands: ["move --direction down"]
-    bindings: ["alt+shift+j", "alt+shift+down"]
+    bindings: ["lmenu+shift+j", "lmenu+shift+down"]
 
   # Resize focused window by a percentage or pixel amount.
   - commands: ["resize --width -2%"]
-    bindings: ["alt+u"]
+    bindings: ["lmenu+u"]
   - commands: ["resize --width +2%"]
-    bindings: ["alt+p"]
+    bindings: ["lmenu+p"]
   - commands: ["resize --height +2%"]
-    bindings: ["alt+o"]
+    bindings: ["lmenu+o"]
   - commands: ["resize --height -2%"]
-    bindings: ["alt+i"]
+    bindings: ["lmenu+i"]
 
   # As an alternative to the resize keybindings above, resize mode enables
   # resizing via arrow keys or HJKL. The binding mode is defined above with
   # the name 'resize'.
   - commands: ["wm-enable-binding-mode --name resize"]
-    bindings: ["alt+r"]
+    bindings: ["lmenu+r"]
 
-  # Disables all keybindings until alt+shift+p is pressed again.
+  # Disables all keybindings until lmenu+shift+p is pressed again.
   - commands: ["wm-enable-binding-mode --name pause"]
-    bindings: ["alt+shift+p"]
+    bindings: ["lmenu+shift+p"]
 
   # Change tiling direction. This determines where new tiling windows will
   # be inserted.
   - commands: ["toggle-tiling-direction"]
-    bindings: ["alt+v"]
+    bindings: ["lmenu+v"]
 
   # Change the focused window to be floating.
   - commands: ["toggle-floating --centered"]
-    bindings: ["alt+shift+space"]
+    bindings: ["lmenu+shift+space"]
 
   # Change the focused window to be tiling.
   # TODO:bindings for this
   # - commands: ["toggle-tiling"]
-  #   bindings: ["alt+shift+t"]
+  #   bindings: ["lmenu+shift+t"]
   # Change focus from tiling windows -> floating -> fullscreen.
   # - commands: ["wm-cycle-focus"]
-  #   bindings: ["alt+space"]
+  #   bindings: ["lmenu+space"]
 
   # Change the focused window to be fullscreen.
   - commands: ["toggle-fullscreen"]
-    bindings: ["alt+shift+f"]
+    bindings: ["lmenu+shift+f"]
 
   # Minimize focused window.
   - commands: ["toggle-minimized"]
-    bindings: ["alt+m"]
+    bindings: ["lmenu+m"]
 
   # Close focused window.
   - commands: ["close"]
-    bindings: ["alt+shift+q"]
+    bindings: ["lmenu+shift+q"]
 
   # Kill GlazeWM process safely.
   - commands: ["wm-exit"]
-    bindings: ["alt+shift+e"]
+    bindings: ["lmenu+shift+e"]
 
   # Re-evaluate configuration file.
   - commands: ["wm-reload-config"]
-    bindings: ["alt+shift+r"]
+    bindings: ["lmenu+shift+r"]
 
   # Redraw all windows.
   - commands: ["wm-redraw"]
-    bindings: ["alt+shift+w"]
+    bindings: ["lmenu+shift+ctrl+w"]
 
   # Launch CMD terminal. Alternatively, use `shell-exec wt` or
   # `shell-exec %ProgramFiles%/Git/git-bash.exe` to start Windows
   # Terminal and Git Bash respectively.
   - commands: ["shell-exec %ProgramFiles%/Wezterm/wezterm-gui.exe"]
-    bindings: ["alt+enter"]
+    bindings: ["lmenu+enter"]
 
   # Focus the next/previous workspace defined in `workspaces` config.
   # - commands: ["focus --next-workspace"]
-  #   bindings: ["alt+s"]
+  #   bindings: ["lmenu+s"]
   # - commands: ["focus --prev-workspace"]
-  #   bindings: ["alt+a"]
+  #   bindings: ["lmenu+a"]
 
   # Focus the workspace that last had focus.
   - commands: ["focus --recent-workspace"]
-    bindings: ["alt+d"]
+    bindings: ["lmenu+d"]
 
   # Change focus to a workspace defined in `workspaces` config.
   - commands: ["focus --workspace 1"]
-    bindings: ["alt+1"]
+    bindings: ["lmenu+1"]
   - commands: ["focus --workspace 2"]
-    bindings: ["alt+2"]
+    bindings: ["lmenu+2"]
   - commands: ["focus --workspace 3"]
-    bindings: ["alt+3"]
+    bindings: ["lmenu+3"]
   - commands: ["focus --workspace 4"]
-    bindings: ["alt+4"]
+    bindings: ["lmenu+4"]
   - commands: ["focus --workspace 5"]
-    bindings: ["alt+5"]
+    bindings: ["lmenu+5"]
   - commands: ["focus --workspace 6"]
-    bindings: ["alt+6"]
+    bindings: ["lmenu+6"]
   - commands: ["focus --workspace 7"]
-    bindings: ["alt+7"]
+    bindings: ["lmenu+7"]
   - commands: ["focus --workspace 8"]
-    bindings: ["alt+8"]
+    bindings: ["lmenu+8"]
   - commands: ["focus --workspace 9"]
-    bindings: ["alt+9"]
+    bindings: ["lmenu+9"]
   - commands: ["focus --workspace 11"]
-    bindings: ["alt+n"]
+    bindings: ["lmenu+n"]
   - commands: ["focus --workspace 12"]
-    bindings: ["alt+y"]
+    bindings: ["lmenu+y"]
   - commands: ["focus --workspace 13"]
-    bindings: ["alt+c"]
-
+    bindings: ["lmenu+c"]
+  - commands: ["focus --workspace 14"]
+    bindings: ["lmenu+w"]
+  - commands: ["focus --workspace 15"]
+    bindings: ["lmenu+p"]
   # Move the focused window's parent workspace to a monitor in a given
   # direction.
   # - commands: ["move-workspace --direction left"]
-  #   bindings: ["alt+shift+a"]
+  #   bindings: ["lmenu+shift+a"]
   # - commands: ["move-workspace --direction right"]
-  #   bindings: ["alt+shift+f"]
+  #   bindings: ["lmenu+shift+f"]
   # - commands: ["move-workspace --direction up"]
-  #   bindings: ["alt+shift+d"]
+  #   bindings: ["lmenu+shift+d"]
   # - commands: ["move-workspace --direction down"]
-  #   bindings: ["alt+shift+s"]
+  #   bindings: ["lmenu+shift+s"]
 
   # Move focused window to a workspace defined in `workspaces` config.
   - commands: ["move --workspace 1", "focus --workspace 1"]
-    bindings: ["alt+shift+1"]
+    bindings: ["lmenu+shift+1"]
   - commands: ["move --workspace 2", "focus --workspace 2"]
-    bindings: ["alt+shift+2"]
+    bindings: ["lmenu+shift+2"]
   - commands: ["move --workspace 3", "focus --workspace 3"]
-    bindings: ["alt+shift+3"]
+    bindings: ["lmenu+shift+3"]
   - commands: ["move --workspace 4", "focus --workspace 4"]
-    bindings: ["alt+shift+4"]
+    bindings: ["lmenu+shift+4"]
   - commands: ["move --workspace 5", "focus --workspace 5"]
-    bindings: ["alt+shift+5"]
+    bindings: ["lmenu+shift+5"]
   - commands: ["move --workspace 6", "focus --workspace 6"]
-    bindings: ["alt+shift+6"]
+    bindings: ["lmenu+shift+6"]
   - commands: ["move --workspace 7", "focus --workspace 7"]
-    bindings: ["alt+shift+7"]
+    bindings: ["lmenu+shift+7"]
   - commands: ["move --workspace 8", "focus --workspace 8"]
-    bindings: ["alt+shift+8"]
+    bindings: ["lmenu+shift+8"]
   - commands: ["move --workspace 9", "focus --workspace 9"]
-    bindings: ["alt+shift+9"]
+    bindings: ["lmenu+shift+9"]
+  - commands: ["move --workspace 11", "focus --workspace 11"]
+    bindings: ["lmenu+shift+n"]
+  - commands: ["move --workspace 14", "focus --workspace 14"]
+    bindings: ["lmenu+shift+w"]
+  - commands: ["move --workspace 15", "focus --workspace 15"]
+    bindings: ["lmenu+shift+p"]
   - commands:
       [
         'shell-exec %ProgramFiles%/WezTerm/wezterm-gui.exe start --class YaziTerm -- pwsh.exe -NoExit -Command "& { $Host.UI.RawUI.WindowTitle = ''TUI File Explorer - Yazi''; yazi }"',
       ]
-    bindings: ["lalt+e"]
+    bindings: ["lmenu+e"]
   - commands: ["shell-exec text_corrector.exe"]
-    bindings: ["lalt+shift+g"]
+    bindings: ["lmenu+shift+g"]
